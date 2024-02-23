@@ -6,7 +6,7 @@ Die Idee stammt von [hier](https://hackaday.com/2019/02/21/hexagonal-lamp-is-a-s
 
 Im Gegensatz zum Original werden hier LED-Stripes montiert, die von einem ESP32 angesteuert werden.
 
-Die Stuerung erfolgt über einen Taster, der betätigt wird, wenn man oben auf die Lampe drückt bzw. über WLAN und MQTT.
+Die Steuerung erfolgt über einen Taster, der betätigt wird, wenn man oben auf die Lampe drückt bzw. über WLAN und MQTT.
 
 ![alt text](https://github.com/ZTL-Space/Hexagonlampe/blob/main/Lamp.png?raw=true)
 
