@@ -8,9 +8,9 @@ Im Gegensatz zum Original werden hier LED-Stripes montiert, die von einem ESP32 
 
 Die Steuerung erfolgt über einen Taster, der betätigt wird, wenn man oben auf die Lampe drückt bzw. über WLAN und MQTT.
 
-![alt text](https://github.com/ZTL-Space/Hexagonlampe/blob/main/Lamp.png?raw=true)
+![alt text](https://github.com/ZTL-Space/Hexagonlampe/blob/main/Doc/Lamp.png?raw=true)
 
-![alt text](https://github.com/ZTL-Space/Hexagonlampe/blob/main/Lamp_Split.png?raw=true)
+![alt text](https://github.com/ZTL-Space/Hexagonlampe/blob/main/Doc/Lamp_Split.png?raw=true)
 
 ## Bestellliste
 - [Hohlstecker](https://www.amazon.de/dp/B0BY161TY7?psc=1&ref=ppx_yo2ov_dt_b_product_details)
