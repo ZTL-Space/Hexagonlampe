@@ -3,9 +3,9 @@
 #include <Arduino.h>
 
 #define PIN_WS2812B 16 // The ESP32 pin GPIO16 connected to WS2812B
-#define NUM_PIXELS 12  // The number of LEDs (pixels) on WS2812B LED strip
+#define NUM_PIXELS 5   // The number of LEDs (pixels) on WS2812B LED strip
 
-Adafruit_NeoPixel ws2812b(NUM_PIXELS, PIN_WS2812B, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel ws2812b(NUM_PIXELS, PIN_WS2812B, NEO_GRBW + NEO_KHZ800);
 
 void setup()
 {
@@ -18,9 +18,9 @@ void loop()
 
     // turn pixels to green one-by-one with delay between each pixel
     for (int pixel = 0; pixel < NUM_PIXELS; pixel++)
-    {                                                           // for each pixel
-        ws2812b.setPixelColor(pixel, ws2812b.Color(0, 255, 0)); // it only takes effect if pixels.show() is called
-        ws2812b.show();                                         // update to the WS2812B Led Strip
+    {                                                              // for each pixel
+        ws2812b.setPixelColor(pixel, ws2812b.Color(0, 255, 0, 0)); // it only takes effect if pixels.show() is called
+        ws2812b.show();                                            // update to the WS2812B Led Strip
 
         delay(500); // 500ms pause between each pixel
     }
@@ -32,8 +32,8 @@ void loop()
 
     // turn on all pixels to red at the same time for two seconds
     for (int pixel = 0; pixel < NUM_PIXELS; pixel++)
-    {                                                           // for each pixel
-        ws2812b.setPixelColor(pixel, ws2812b.Color(255, 0, 0)); // it only takes effect if pixels.show() is called
+    {                                                              // for each pixel
+        ws2812b.setPixelColor(pixel, ws2812b.Color(0, 0, 0, 255)); // it only takes effect if pixels.show() is called
     }
     ws2812b.show(); // update to the WS2812B Led Strip
     delay(1000);    // 1 second on time
