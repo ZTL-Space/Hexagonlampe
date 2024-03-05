@@ -7,6 +7,7 @@
 
 #define PIN_WS2812B 16 // The ESP32 pin GPIO16 connected to WS2812B
 #define NUM_PIXELS 5   // The number of LEDs (pixels) on WS2812B LED strip
+#define PIN_BUTTON 27
 
 Adafruit_NeoPixel ws2812b(NUM_PIXELS, PIN_WS2812B, NEO_GRBW + NEO_KHZ800);
 
@@ -14,12 +15,23 @@ const char *ssid = "";
 const char *password = "";
 const char *mqtt_server = "";
 
+const char *topic = "ztl";
+
 WiFiClient espClient;
 PubSubClient client(espClient);
-unsigned long lastMsg = 0;
-#define MSG_BUFFER_SIZE (50)
-char msg[MSG_BUFFER_SIZE];
-int value = 0;
+
+bool ButtonMessageReceivedFlag = false;
+bool IAmTheFirstSender = false;
+
+enum State
+{
+    OFF,
+    PRIMARY_COLOR,
+    SECONDARY_COLOR
+};
+
+void HandleSignal();
+void HandleButton();
 
 void setup_wifi()
 {
@@ -61,28 +73,15 @@ void callback(char *topic, byte *payload, unsigned int length)
     // Switch on the LED if an 1 was received as first character
     if ((char)payload[0] == '1')
     {
-        // turn pixels to green one-by-one with delay between each pixel
-        for (int pixel = 0; pixel < NUM_PIXELS; pixel++)
-        {                                                              // for each pixel
-            ws2812b.setPixelColor(pixel, ws2812b.Color(0, 255, 0, 0)); // it only takes effect if pixels.show() is
-                                                                       // called update to the WS2812B Led Strip
-        }
-        ws2812b.show();
-    }
-    else
-    {
-        // turn pixels to green one-by-one with delay between each pixel
-        for (int pixel = 0; pixel < NUM_PIXELS; pixel++)
-        {                                                              // for each pixel
-            ws2812b.setPixelColor(pixel, ws2812b.Color(255, 0, 0, 0)); // it only takes effect if pixels.show() is
-                                                                       // called update to the WS2812B Led Strip
-        }
-        ws2812b.show();
+        ButtonMessageReceivedFlag = true;
     }
 }
 
 void reconnect()
 {
+    ws2812b.fill(ws2812b.Color(255, 0, 0, 0));
+    ws2812b.show();
+
     // Loop until we're reconnected
     while (!client.connected())
     {
@@ -91,13 +90,10 @@ void reconnect()
         String clientId = "ESP8266Client-";
         clientId += String(random(0xffff), HEX);
         // Attempt to connect
-        if (client.connect(clientId.c_str() /*, "ztl", "Ztl2019!"*/))
+        if (client.connect(clientId.c_str()))
         {
             Serial.println("connected");
-            // Once connected, publish an announcement...
-            client.publish("ztl_out", "hello world");
-            // ... and resubscribe
-            client.subscribe("ztl_in");
+            client.subscribe(topic);
         }
         else
         {
@@ -108,24 +104,23 @@ void reconnect()
             delay(5000);
         }
     }
+
+    ws2812b.fill(ws2812b.Color(0, 0, 0, 0));
+    ws2812b.show();
 }
 
 void setup()
 {
-    ws2812b.begin();              // initialize WS2812B strip object (REQUIRED)
-    pinMode(BUILTIN_LED, OUTPUT); // Initialize the BUILTIN_LED pin as an output
+    pinMode(PIN_BUTTON, INPUT_PULLUP);
+
+    ws2812b.begin();
+    ws2812b.fill(ws2812b.Color(0, 0, 255, 0));
+    ws2812b.show();
+
     Serial.begin(115200);
     setup_wifi();
     client.setServer(mqtt_server, 1883);
     client.setCallback(callback);
-
-    ws2812b.begin(); // initialize WS2812B strip object (REQUIRED)
-    for (int pixel = 0; pixel < NUM_PIXELS; pixel++)
-    {                                                              // for each pixel
-        ws2812b.setPixelColor(pixel, ws2812b.Color(0, 0, 0, 255)); // it only takes effect if pixels.show() is
-                                                                   // called update to the WS2812B Led Strip
-    }
-    ws2812b.show();
 }
 
 void loop()
@@ -136,14 +131,62 @@ void loop()
     }
     client.loop();
 
+    HandleSignal();
+    HandleButton();
+}
+
+void HandleSignal()
+{
+    static State state = State::OFF;
+    static unsigned long timeout = 0xFFFFFFFF;
     unsigned long now = millis();
-    if (now - lastMsg > 2000)
+
+    switch (state)
     {
-        lastMsg = now;
-        ++value;
-        snprintf(msg, MSG_BUFFER_SIZE, "hello world #%ld", value);
-        Serial.print("Publish message: ");
-        Serial.println(msg);
-        client.publish("ztl_out", msg);
+    case State::OFF:
+        if (ButtonMessageReceivedFlag)
+        {
+            ws2812b.fill(ws2812b.Color(255, 0, 0, 0));
+            ws2812b.show();
+            timeout = millis() + 30 * 1000;
+            state = State::PRIMARY_COLOR;
+        }
+        break;
+    case State::PRIMARY_COLOR:
+        if (ButtonMessageReceivedFlag)
+        {
+            ws2812b.fill(ws2812b.Color(0, 0, 0, 255));
+            ws2812b.show();
+            timeout = millis() + 30 * 1000;
+            state = State::SECONDARY_COLOR;
+        }
+        else if (now > timeout)
+        {
+            state = State::OFF;
+            ws2812b.fill(ws2812b.Color(0, 0, 0, 0));
+            ws2812b.show();
+            IAmTheFirstSender = false;
+        }
+        break;
+    case State::SECONDARY_COLOR:
+        if (now > timeout)
+        {
+            state = State::OFF;
+            ws2812b.fill(ws2812b.Color(0, 0, 0, 0));
+            ws2812b.show();
+            IAmTheFirstSender = false;
+        }
+        break;
+    }
+
+    ButtonMessageReceivedFlag = false;
+}
+
+void HandleButton()
+{
+    if (!digitalRead(PIN_BUTTON) && IAmTheFirstSender == false)
+    {
+        client.publish(topic, "1");
+        IAmTheFirstSender = true;
     }
 }
