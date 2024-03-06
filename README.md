@@ -16,7 +16,7 @@ Die Steuerung erfolgt über einen Taster, der betätigt wird, wenn man oben auf 
 - [Hohlstecker](https://www.amazon.de/dp/B0BY161TY7?psc=1&ref=ppx_yo2ov_dt_b_product_details)
 - [Federn](https://www.amazon.de/WPERSUVV-3D-Druckfedern-Druckfedern-Lichtlast-Kompression/dp/B07RGW1D2K/ref=sr_1_17?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=OI1H6LCDRIY1&keywords=feder+8mm+durchmesser&qid=1707513983&sprefix=feder+8mm+durchmesser%2Caps%2C184&sr=8-17)
 - [ESP32](https://www.amazon.de/AZDelivery-Bluetooth-Internet-Entwicklungsboard-kompatibel/dp/B08BTYCGVV/ref=sr_1_5?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=354K0CAFTX0AC&dib=eyJ2IjoiMSJ9.ZSpEMuf5SLFWXNmoHZfHqUs4Bl9y1aIZM7nFURiu-pWORNPzgHgUxZCj0BrtNJTEljJY4mRalseAHx5LwbtuuyzVwMKUpqfTp9COxww0NM7pOxe11NVlunHLEC7y2StF65KzOyG1xJi2yV-t26XukEq85A0ig1ORWvKUn_YVJSS0YpJEugWRsVlZuRH_XdXmF4IZeUpA42PAVfl4Qj_fuZx5XLsb8i5x9llhjsc09Bw.SipSYd1oEKiKyEGyvmM_BI9P-U8aHlT18Rvt1i-B6h4&dib_tag=se&keywords=azdelivery%2Besp32&qid=1708684590&sprefix=azdelivery%2Besp32%2Caps%2C144&sr=8-5&th=1)
-- [5V-Steckernetzteile](TBD)
+- [5V-Steckernetzteile](https://www.henri.de/stromversorgung/steckernetzteile/steckernetzteil-5v-dc/33298/5v-steckernetzteil-5v-12w-2-4a-stecker-5-5x2-1mm-eingang-230v-pce-serie.html?number=93-815-05005)
 - [Holz](https://www.hornbach.de/p/fixmass-sperrholz-pappel-800x600x8-mm/10258462/)
 - [Hobbyglas](https://www.hornbach.de/p/hobbyglas-4x500x1500-mm-glatt-klar/1477889/)
 - [Linearführungen](https://www.hornbach.de/p/hobbyglas-4x500x1500-mm-glatt-klar/1477889/)
